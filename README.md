@@ -1,6 +1,6 @@
 # Umbraco Editor Assistant
 
-![Umbraco Editor Assistant package icon](src/Umbraco.EditorAssistant/icon.png)
+![Umbraco Editor Assistant package icon](https://raw.githubusercontent.com/Alaeddinalhamoud/Umbraco.EditorAssistant/main/src/Umbraco.EditorAssistant/icon.png)
 
 Umbraco Editor Assistant adds a small **Editor Assistant** button to each published page on your website. When a logged-in backoffice user clicks the button, the corresponding content item opens directly in the Umbraco backoffice, ready to edit.
 
@@ -10,7 +10,7 @@ The package is built for **Umbraco 17** and **.NET 10** and is distributed as a 
 
 Authenticated backoffice users see the Editor Assistant button on the frontend:
 
-<img src="docs/images/editor-assistant-frontend-button.png" alt="Editor Assistant button displayed on the frontend" width="600">
+<img src="https://raw.githubusercontent.com/Alaeddinalhamoud/Umbraco.EditorAssistant/main/docs/images/editor-assistant-frontend-button.png" alt="Editor Assistant button displayed on the frontend" width="600">
 
 ## Why use this package?
 
@@ -40,7 +40,7 @@ Content editors often notice a change while looking at the live website, but fin
 Install the package in the Umbraco web project:
 
 ```shell
-dotnet add package Umbraco.EditorAssistant
+dotnet add package EditorAssistant.Umbraco
 ```
 
 Restart the application. No stylesheet references, layout markup, `_ViewImports.cshtml` entries, or service registrations are normally required.
@@ -203,4 +203,4 @@ Issues and pull requests are welcome. Keep changes focused, preserve authenticat
 
 ## License
 
-No license file is currently included. Add a license before redistribution or accepting external contributions.
+This project is licensed under the [MIT License](LICENSE).

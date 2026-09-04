@@ -8,13 +8,19 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Umbraco.EditorAssistant</PackageId>
+    <PackageId>EditorAssistant.Umbraco</PackageId>
     <Product>Umbraco.EditorAssistant</Product>
     <Title>Umbraco.EditorAssistant</Title>
 	<Version>1.0.0</Version>
 	<Authors>Alaeddin Alhamoud</Authors>
+	<Copyright>Copyright © 2026 Alaeddin Alhamoud</Copyright>
 	<Description>Adds an authenticated front-end Editor Assistant link for Umbraco 17 content editors.</Description>
+	<PackageReleaseNotes>Initial release. Adds an authenticated front-end Editor Assistant link for Umbraco 17 content editors, with configurable appearance and secure backoffice edit links.</PackageReleaseNotes>
 	<PackageTags>umbraco;umbraco17;backoffice;editor</PackageTags>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PackageProjectUrl>https://github.com/Alaeddinalhamoud/Umbraco.EditorAssistant</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/Alaeddinalhamoud/Umbraco.EditorAssistant</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<PackageIcon>Umbraco.EditorAssistant/icon.png</PackageIcon>
 	<IsPackable>true</IsPackable>
