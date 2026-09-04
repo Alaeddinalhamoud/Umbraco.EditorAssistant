@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <!-- Allow floating versions so extensions can align with the host Umbraco project's package versions -->
+    <CentralPackageFloatingVersionsEnabled>true</CentralPackageFloatingVersionsEnabled>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Umbraco API packages - Used by extension templates -->
+    <PackageVersion Include="Umbraco.Cms.Api.Common" Version="18.0.0" />
+    <PackageVersion Include="Umbraco.Cms.Api.Management" Version="18.0.0" />
+    <PackageVersion Include="Umbraco.Cms.Web.Common" Version="17.6.2" />
+    <PackageVersion Include="Umbraco.Cms.Web.Website" Version="18.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.11" />
+  </ItemGroup>
+</Project>

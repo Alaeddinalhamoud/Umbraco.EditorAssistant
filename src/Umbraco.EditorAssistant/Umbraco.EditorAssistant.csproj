@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+	<StaticWebAssetBasePath>App_Plugins/EditorAssistant.Umbraco</StaticWebAssetBasePath>
+	<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Umbraco.EditorAssistant</PackageId>
+    <Product>Umbraco.EditorAssistant</Product>
+    <Title>Umbraco.EditorAssistant</Title>
+	<Version>1.0.0</Version>
+	<Authors>Alaeddin Alhamoud</Authors>
+	<Description>Adds an authenticated front-end Editor Assistant link for Umbraco 17 content editors.</Description>
+	<PackageTags>umbraco;umbraco17;backoffice;editor</PackageTags>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageIcon>Umbraco.EditorAssistant/icon.png</PackageIcon>
+	<IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+
+  <!-- Central package management - no versions -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" Link="README.md" />
+		<None Include="icon.png" Pack="true" PackagePath="Umbraco.EditorAssistant\" />
+	</ItemGroup>
+	<ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+</Project>

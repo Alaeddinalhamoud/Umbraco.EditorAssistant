@@ -1,0 +1,9 @@
+{
+  "$schema": "../../umbraco-package-schema.json",
+  "id": "EditorAssistant.Umbraco",
+  "name": "Editor Assistant",
+  "version": "1.0.0",
+  "allowTelemetry": false,
+  "allowPublicAccess": true,
+  "extensions": []
+}

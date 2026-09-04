@@ -1,0 +1,115 @@
+.editor-assistant {
+    --editor-assistant-background: var(--button-background, var(--umb-button-background, var(--uui-color-primary, #1b264f)));
+    --editor-assistant-background-hover: var(--button-hover-background, var(--umb-button-hover-background, var(--uui-color-primary-hover, #26366f)));
+    --editor-assistant-focus: var(--button-focus-color, var(--umb-button-focus-color, var(--uui-color-focus, #00bec1)));
+    --editor-assistant-text: var(--button-text-color, var(--umb-button-text-color, var(--uui-color-primary-contrast, #fff)));
+    --editor-assistant-font-family: var(--button-font-family, var(--umb-button-font-family, inherit));
+    --editor-assistant-font-size: var(--button-font-size, var(--umb-button-font-size, inherit));
+    --editor-assistant-font-weight: var(--button-font-weight, var(--umb-button-font-weight, inherit));
+    position: fixed;
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    z-index: 2147483000;
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    min-height: 2.75rem;
+    padding: .7rem 1rem;
+    color: var(--editor-assistant-text);
+    background: var(--editor-assistant-background);
+    border: 1px solid rgb(255 255 255 / 18%);
+    border-radius: 999px;
+    box-shadow: 0 .5rem 1.5rem rgb(0 0 0 / 22%), 0 .125rem .25rem rgb(0 0 0 / 18%);
+    font-family: var(--editor-assistant-font-family);
+    font-size: var(--editor-assistant-font-size);
+    font-weight: var(--editor-assistant-font-weight);
+    text-decoration: none;
+    cursor: pointer;
+    -webkit-text-fill-color: currentColor;
+    transition: background-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.editor-assistant,
+.editor-assistant:link,
+.editor-assistant:visited,
+.editor-assistant:hover,
+.editor-assistant:focus,
+.editor-assistant:focus-visible,
+.editor-assistant:active {
+    color: var(--editor-assistant-text, inherit);
+    text-decoration: none;
+}
+
+.editor-assistant:hover {
+    color: var(--editor-assistant-text, inherit);
+    background: var(--editor-assistant-background-hover);
+    box-shadow: 0 .75rem 1.75rem rgb(0 0 0 / 27%), 0 .125rem .25rem rgb(0 0 0 / 18%);
+    transform: translateY(-2px);
+}
+
+.editor-assistant:focus-visible {
+    color: var(--editor-assistant-text, inherit);
+    outline: 3px solid var(--editor-assistant-focus);
+    outline-offset: 3px;
+}
+
+.editor-assistant:active { transform: translateY(0); }
+
+.editor-assistant__icon,
+.editor-assistant__label,
+.editor-assistant * {
+    color: inherit;
+    font: inherit;
+}
+
+.editor-assistant__icon {
+    flex: 0 0 auto;
+    transform-origin: 50% 50%;
+}
+
+.editor-assistant__icon path {
+    fill: currentColor;
+}
+
+.editor-assistant:hover .editor-assistant__icon,
+.editor-assistant:focus-visible .editor-assistant__icon {
+    animation: editor-assistant-icon-pop 500ms ease-out;
+}
+
+@keyframes editor-assistant-icon-pop {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    35% { transform: rotate(-12deg) scale(1.18); }
+    70% { transform: rotate(8deg) scale(1.08); }
+}
+
+.editor-assistant__label {
+    white-space: nowrap;
+}
+
+@media (max-width: 30rem) {
+    .editor-assistant {
+        width: 2.875rem;
+        min-width: 2.875rem;
+        padding: 0;
+        justify-content: center;
+    }
+
+    .editor-assistant__label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .editor-assistant { transition: none; }
+
+    .editor-assistant__icon { animation: none !important; }
+}
+
+@media print {
+    .editor-assistant { display: none !important; }
+}
