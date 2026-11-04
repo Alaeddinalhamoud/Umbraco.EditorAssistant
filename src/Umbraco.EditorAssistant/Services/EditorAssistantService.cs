@@ -9,6 +9,13 @@ namespace Umbraco.EditorAssistant.Services;
 
 public sealed class EditorAssistantService(IOptions<EditorAssistantOptions> options) : IEditorAssistantService
 {
+    // Umbraco 18 moved Name to IPublishedElement. Resolve its declaring interface
+    // at runtime so the same package binary also works with Umbraco 17.
+    private static readonly System.Reflection.PropertyInfo ContentNameProperty =
+        typeof(IPublishedContent).GetProperty(nameof(IPublishedContent.Name))
+        ?? typeof(IPublishedElement).GetProperty(nameof(IPublishedContent.Name))
+        ?? throw new InvalidOperationException("The installed Umbraco version does not expose a published content name.");
+
     private readonly EditorAssistantOptions _options = options.Value;
 
     public async Task<EditorAssistantViewModel?> CreateModelAsync(HttpContext httpContext, IPublishedContent? currentContent, CancellationToken cancellationToken = default)
@@ -26,7 +33,7 @@ public sealed class EditorAssistantService(IOptions<EditorAssistantOptions> opti
         string contentKey = currentContent.Key.ToString("D").ToLowerInvariant();
         string editUrl = $"{applicationPath}{backofficePath}/section/content/workspace/document/edit/{contentKey}";
 
-        return new EditorAssistantViewModel(editUrl, currentContent.Name);
+        return new EditorAssistantViewModel(editUrl, (string?)ContentNameProperty.GetValue(currentContent) ?? string.Empty);
     }
 
     #region Private Methods

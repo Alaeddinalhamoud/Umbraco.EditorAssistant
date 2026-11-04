@@ -1,0 +1,24 @@
+name: Umbraco compatibility
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        umbraco: ['17.1.0', '17.6.2', '18.0.0']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Pack against the minimum supported Umbraco API
+        run: dotnet pack src/Umbraco.EditorAssistant/Umbraco.EditorAssistant.csproj -c Release -o artifacts
+      - name: Test the packaged binary against the host Umbraco version
+        run: >-
+          dotnet test tests/Umbraco.EditorAssistant.Tests/Umbraco.EditorAssistant.Tests.csproj
+          -c Release
+          -p:UsePackagedEditorAssistant=true
+          -p:UmbracoTestVersion=${{ matrix.umbraco }}
+          -p:RestoreAdditionalProjectSources=${{ github.workspace }}/artifacts

@@ -4,7 +4,16 @@
 
 Umbraco Editor Assistant adds a small **Editor Assistant** button to each published page on your website. When a logged-in backoffice user clicks the button, the corresponding content item opens directly in the Umbraco backoffice, ready to edit.
 
-The package is built for **Umbraco 17** and **.NET 10** and is distributed as a Razor Class Library. It requires no template changes in a standard Umbraco installation.
+The package is built for **Umbraco 17.1+ and 18** and **.NET 10** and is distributed as a Razor Class Library. It requires no template changes in a standard Umbraco installation.
+
+## Release notes
+
+### 1.1.0
+
+- Supports **Umbraco 17 (17.1 and later)** and **Umbraco 18** on .NET 10.
+- Fixes binary compatibility with published content names in Umbraco 18.
+- Adds automated compatibility checks against Umbraco 17.1.0, 17.6.2, and 18.0.0.
+- Requires Umbraco 17.1 or later; Umbraco 17.0 lacks the required exposed backoffice authentication API.
 
 ## Frontend button
 
@@ -26,7 +35,7 @@ Content editors often notice a change while looking at the live website, but fin
 
 ## Requirements
 
-- Umbraco CMS 17
+- Umbraco CMS 17.1 or later in the 17.x series, or 18.x
 - .NET 10
 - A frontend layout with standard `<head>` and `<body>` elements
 - Built-in MVC tag helpers enabled, as in standard Umbraco templates
@@ -189,7 +198,16 @@ Run the automated tests from the repository root:
 dotnet test "Umbraco EditorAssistant.slnx" --configuration Release
 ```
 
-The service tests cover authentication gating, missing and invalid content, edit URL generation, application path bases, custom backoffice paths, fallback configuration, cancellation, and argument validation. Before release, also verify in an Umbraco 17 site that:
+The compatibility workflow builds one NuGet package against Umbraco 17.1.0 and tests that packaged binary against 17.1.0, 17.6.2, and 18.0.0. The dependency range is `[17.1.0,19.0.0)`, so the host can select either supported major version. Umbraco 17.0 is excluded because it lacks the exposed backoffice authentication scheme used by the package.
+
+To run the same package checks locally (replace `18.0.0` with another supported test version):
+
+```shell
+dotnet pack src/Umbraco.EditorAssistant/Umbraco.EditorAssistant.csproj -c Release -o artifacts
+dotnet test tests/Umbraco.EditorAssistant.Tests/Umbraco.EditorAssistant.Tests.csproj -c Release -p:UsePackagedEditorAssistant=true -p:UmbracoTestVersion=18.0.0 -p:RestoreAdditionalProjectSources="<absolute-path-to-artifacts>"
+```
+
+The tests cover authentication gating, missing and invalid content, edit URL generation, application path bases, custom backoffice paths, fallback configuration, cancellation, argument validation, automatic body rendering, HTML encoding, and cache headers. A runtime compatibility bridge handles the move of the published content name to `IPublishedElement` in Umbraco 18. Before release, also verify in both an Umbraco 17 and an Umbraco 18 site that:
 
 - Anonymous visitors do not see the button.
 - Authenticated users see it on published content pages.
