@@ -21,6 +21,7 @@ public sealed class EditorAssistantService(IOptions<EditorAssistantOptions> opti
     public async Task<EditorAssistantViewModel?> CreateModelAsync(HttpContext httpContext, IPublishedContent? currentContent, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpContext);
+
         cancellationToken.ThrowIfCancellationRequested();
 
         AuthenticateResult authentication = await httpContext.AuthenticateAsync(Constants.Security.BackOfficeExposedAuthenticationType);

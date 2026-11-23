@@ -11,7 +11,7 @@
     <PackageId>EditorAssistant.Umbraco</PackageId>
     <Product>Umbraco.EditorAssistant</Product>
     <Title>Umbraco.EditorAssistant</Title>
-	<Version>1.1.1</Version>
+	<Version>1.1.2</Version>
 	<Authors>Alaeddin Alhamoud</Authors>
 	<Copyright>Copyright © 2026 Alaeddin Alhamoud</Copyright>
 	<Description>Adds an authenticated front-end Editor Assistant link for Umbraco 17 and 18 content editors.</Description>
