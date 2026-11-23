@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Options;
 using Moq;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -12,12 +14,12 @@ using Xunit;
 
 namespace Umbraco.EditorAssistant.Tests.Components;
 
-public sealed class EditorAssistantTagHelperComponentTests
+public sealed class EditorAssistantViewComponentTests
 {
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
-    public async Task Body_RendersOnlyForEditors_AndPreventsSharedCaching(bool authenticated)
+    public async Task InvokeAsync_RendersOnlyForEditors_AndPreventsSharedCaching(bool authenticated)
     {
         Mock<IPublishedContent> content = new();
         Mock<IPublishedRequest> request = new();
@@ -32,23 +34,25 @@ public sealed class EditorAssistantTagHelperComponentTests
         Mock<IEditorAssistantService> service = new();
         service.Setup(x => x.CreateModelAsync(httpContext, content.Object, It.IsAny<CancellationToken>()))
             .ReturnsAsync(authenticated ? new EditorAssistantViewModel("/umbraco/edit/test", "News & events") : null);
-        EditorAssistantTagHelperComponent component = new(service.Object, accessor.Object,
-            new HttpContextAccessor { HttpContext = httpContext }, Options.Create(new EditorAssistantOptions()));
-        TagHelperContext context = new("body", new TagHelperAttributeList(), new Dictionary<object, object>(), "test");
-        TagHelperOutput output = new("body", new TagHelperAttributeList(),
-            (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
+        EditorAssistantViewComponent component = new(service.Object, accessor.Object, Options.Create(new EditorAssistantOptions()))
+        {
+            ViewComponentContext = new ViewComponentContext
+            {
+                ViewContext = new ViewContext { HttpContext = httpContext }
+            }
+        };
 
-        await component.ProcessAsync(context, output);
+        IViewComponentResult result = await component.InvokeAsync();
 
         Assert.Equal("private, no-store, max-age=0", httpContext.Response.Headers.CacheControl.ToString());
         if (authenticated)
         {
-            Assert.Contains("href=\"/umbraco/edit/test\"", output.PostContent.GetContent());
-            Assert.Contains("News &amp; events", output.PostContent.GetContent());
+            var view = Assert.IsType<ViewViewComponentResult>(result);
+            Assert.Equal(new EditorAssistantViewModel("/umbraco/edit/test", "News & events"), view.ViewData!.Model);
         }
         else
         {
-            Assert.Empty(output.PostContent.GetContent());
+            Assert.Empty(Assert.IsType<ContentViewComponentResult>(result).Content);
         }
         service.VerifyAll();
     }

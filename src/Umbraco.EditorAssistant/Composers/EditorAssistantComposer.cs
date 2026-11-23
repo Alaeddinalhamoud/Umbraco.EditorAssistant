@@ -1,10 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Razor.TagHelpers;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.EditorAssistant.Services;
 using Umbraco.EditorAssistant.Models;
-using Umbraco.EditorAssistant.Components;
 
 namespace Umbraco.EditorAssistant.Composers;
 
@@ -22,6 +20,5 @@ public sealed class EditorAssistantComposer : IComposer
             .ValidateOnStart();
 
         builder.Services.AddScoped<IEditorAssistantService, EditorAssistantService>();
-        builder.Services.AddTransient<ITagHelperComponent, EditorAssistantTagHelperComponent>();
     }
 }

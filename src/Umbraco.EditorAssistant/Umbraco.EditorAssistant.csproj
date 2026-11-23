@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -11,11 +11,11 @@
     <PackageId>EditorAssistant.Umbraco</PackageId>
     <Product>Umbraco.EditorAssistant</Product>
     <Title>Umbraco.EditorAssistant</Title>
-	<Version>1.1.0</Version>
+	<Version>1.1.1</Version>
 	<Authors>Alaeddin Alhamoud</Authors>
 	<Copyright>Copyright © 2026 Alaeddin Alhamoud</Copyright>
 	<Description>Adds an authenticated front-end Editor Assistant link for Umbraco 17 and 18 content editors.</Description>
-	<PackageReleaseNotes>Added support for Umbraco 17 (17.1 and later) and Umbraco 18 on .NET 10. Fixed binary compatibility with Umbraco 18 published content names. Umbraco 17.0 is not supported because it lacks the required exposed backoffice authentication API.</PackageReleaseNotes>
+	<PackageReleaseNotes>Add the package stylesheet inside head and call the EditorAssistant View Component inside body in your shared Razor layout. See the package README for both snippets and upgrade instructions. Requires Umbraco 17.8.2 or later in the 17.x series, or Umbraco 18.</PackageReleaseNotes>
 	<PackageTags>umbraco;umbraco17;umbraco18;backoffice;editor</PackageTags>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<PackageProjectUrl>https://github.com/Alaeddinalhamoud/Umbraco.EditorAssistant</PackageProjectUrl>

@@ -4,6 +4,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Compile against the oldest supported API; let the host select 17.x or 18.x. -->
-    <PackageVersion Include="Umbraco.Cms.Web.Common" Version="[17.1.0,19.0.0)" />
+    <PackageVersion Include="Umbraco.Cms.Web.Common" Version="[17.8.2,19.0.0)" />
   </ItemGroup>
 </Project>

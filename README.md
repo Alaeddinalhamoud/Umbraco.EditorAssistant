@@ -4,9 +4,15 @@
 
 Umbraco Editor Assistant adds a small **Editor Assistant** button to each published page on your website. When a logged-in backoffice user clicks the button, the corresponding content item opens directly in the Umbraco backoffice, ready to edit.
 
-The package is built for **Umbraco 17.1+ and 18** and **.NET 10** and is distributed as a Razor Class Library. It requires no template changes in a standard Umbraco installation.
+The package is built for **Umbraco 17.8.2+ and 18** and **.NET 10** and is distributed as a Razor Class Library.
 
 ## Release notes
+
+### 1.1.1
+
+- Add the Editor Assistant stylesheet and View Component to your shared Razor layout to control where the button renders.
+- **Upgrade from 1.1.0.** Add both snippets in [Installation](#installation) to keep the button visible and styled after upgrading.
+- Requires Umbraco 17.8.2 or later in the 17.x series, or Umbraco 18.
 
 ### 1.1.0
 
@@ -26,7 +32,7 @@ Authenticated backoffice users see the Editor Assistant button on the frontend:
 Content editors often notice a change while looking at the live website, but finding the same page in a large backoffice content tree takes time. Editor Assistant removes that friction by connecting the published page directly to its editing workspace.
 
 - **Edit the page you are viewing** — one click opens the matching Umbraco document.
-- **No template integration** — markup and styles are added automatically.
+- **Flexible placement** — add the stylesheet and render the button from your layout.
 - **Invisible to visitors** — only authenticated backoffice users receive the button.
 - **Virtual-directory support** — generated URLs respect the application's `PathBase`.
 - **Safe caching defaults** — editor-specific responses are private and non-cacheable by default.
@@ -35,34 +41,40 @@ Content editors often notice a change while looking at the live website, but fin
 
 ## Requirements
 
-- Umbraco CMS 17.1 or later in the 17.x series, or 18.x
+- Umbraco CMS 17.8.2 or later in the 17.x series, or 18.x
 - .NET 10
 - A frontend layout with standard `<head>` and `<body>` elements
-- Built-in MVC tag helpers enabled, as in standard Umbraco templates
-
-```cshtml
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-```
 
 ## Installation
 
 Install the package in the Umbraco web project:
 
 ```shell
-dotnet add package EditorAssistant.Umbraco
+dotnet add package EditorAssistant.Umbraco --version 1.1.1
 ```
 
-Restart the application. No stylesheet references, layout markup, `_ViewImports.cshtml` entries, or service registrations are normally required.
+Add this stylesheet link inside `<head>` in your site's shared Razor layout:
+
+```cshtml
+<link rel="stylesheet" href="@Url.Content("~/App_Plugins/EditorAssistant.Umbraco/css/editor-assistant.css")" />
+```
+
+In the same layout, call the View Component inside `<body>` where you want the link rendered. For example, place it just before `</body>`:
+
+```cshtml
+@await Component.InvokeAsync("EditorAssistant")
+```
+
+If you are upgrading from a version that injects the stylesheet and link automatically, add both lines to your layout. The button uses CSS for its styling and interaction.
 
 ## How it works
 
-The package registers an Umbraco composer and an ASP.NET Core Tag Helper Component. On frontend requests, it:
+When called from the layout, the View Component:
 
-1. Adds the package stylesheet to the end of `<head>`.
-2. Gets the current published content from the Umbraco request.
-3. Checks the user against Umbraco's backoffice authentication scheme.
-4. Builds an edit URL from the content key.
-5. Adds the Editor Assistant link to the end of `<body>` only when the user is authenticated and valid published content is available.
+1. Gets the current published content from the Umbraco request.
+2. Checks the user against Umbraco's backoffice authentication scheme.
+3. Builds an edit URL from the content key.
+4. Renders the Editor Assistant link only when the user is authenticated and valid published content is available.
 
 The edit workspace opens in a new tab, leaving the frontend page available for review. Umbraco remains responsible for enforcing the user's content permissions at the destination.
 
@@ -149,27 +161,17 @@ At viewport widths up to `30rem`, the visible label is hidden and the compact ic
 ## Security notes
 
 - The button is conditional UI, not an authorization boundary; Umbraco validates backoffice permissions.
-- Dynamic values are HTML encoded before markup is appended.
+- Razor HTML encodes dynamic values when rendering the link.
 - The new-tab link uses `noopener` and `noreferrer` so the opened page cannot control the source window.
 - `nofollow` asks search engines not to follow the backoffice URL.
 - Response caching is disabled by default to protect authentication-dependent output.
-
-## Manual rendering
-
-An `EditorAssistantViewComponent` is included for applications that need explicit rendering:
-
-```cshtml
-@await Component.InvokeAsync("EditorAssistant")
-```
-
-Standard installations should use automatic rendering. Calling the View Component while the automatic Tag Helper Component is active can render the button twice.
 
 ## Project structure
 
 ```text
 src/
 └── Umbraco.EditorAssistant/
-    ├── Components/     Automatic Tag Helper and optional View Component
+    ├── Components/     Editor Assistant View Component
     ├── Composers/      Umbraco and dependency-injection registration
     ├── Models/         Options and view model
     ├── Services/       Authentication check and edit-URL generation
@@ -198,7 +200,7 @@ Run the automated tests from the repository root:
 dotnet test "Umbraco EditorAssistant.slnx" --configuration Release
 ```
 
-The compatibility workflow builds one NuGet package against Umbraco 17.1.0 and tests that packaged binary against 17.1.0, 17.6.2, and 18.0.0. The dependency range is `[17.1.0,19.0.0)`, so the host can select either supported major version. Umbraco 17.0 is excluded because it lacks the exposed backoffice authentication scheme used by the package.
+The compatibility workflow builds one NuGet package against Umbraco 17.8.2 and tests that packaged binary against 17.8.2 and 18.0.0. The dependency range is `[17.8.2,19.0.0)`, so the host can select either supported major version.
 
 To run the same package checks locally (replace `18.0.0` with another supported test version):
 
@@ -207,7 +209,7 @@ dotnet pack src/Umbraco.EditorAssistant/Umbraco.EditorAssistant.csproj -c Releas
 dotnet test tests/Umbraco.EditorAssistant.Tests/Umbraco.EditorAssistant.Tests.csproj -c Release -p:UsePackagedEditorAssistant=true -p:UmbracoTestVersion=18.0.0 -p:RestoreAdditionalProjectSources="<absolute-path-to-artifacts>"
 ```
 
-The tests cover authentication gating, missing and invalid content, edit URL generation, application path bases, custom backoffice paths, fallback configuration, cancellation, argument validation, automatic body rendering, HTML encoding, and cache headers. A runtime compatibility bridge handles the move of the published content name to `IPublishedElement` in Umbraco 18. Before release, also verify in both an Umbraco 17 and an Umbraco 18 site that:
+The tests cover authentication gating, missing and invalid content, edit URL generation, application path bases, custom backoffice paths, fallback configuration, cancellation, argument validation, View Component results, and cache headers. A runtime compatibility bridge handles the move of the published content name to `IPublishedElement` in Umbraco 18. Before release, also verify in both an Umbraco 17 and an Umbraco 18 site that:
 
 - Anonymous visitors do not see the button.
 - Authenticated users see it on published content pages.

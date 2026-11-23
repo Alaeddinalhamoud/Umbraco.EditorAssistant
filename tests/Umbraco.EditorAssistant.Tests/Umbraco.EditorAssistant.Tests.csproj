@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <UmbracoTestVersion Condition="'$(UmbracoTestVersion)' == ''">17.1.0</UmbracoTestVersion>
+    <UmbracoTestVersion Condition="'$(UmbracoTestVersion)' == ''">17.8.2</UmbracoTestVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +23,6 @@
     <ProjectReference Include="..\..\src\Umbraco.EditorAssistant\Umbraco.EditorAssistant.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(UsePackagedEditorAssistant)' == 'true'">
-    <PackageReference Include="EditorAssistant.Umbraco" Version="1.1.0" />
+    <PackageReference Include="EditorAssistant.Umbraco" Version="1.1.1" />
   </ItemGroup>
 </Project>
